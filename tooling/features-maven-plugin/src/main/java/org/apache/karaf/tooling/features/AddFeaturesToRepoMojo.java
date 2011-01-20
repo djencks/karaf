@@ -140,59 +140,13 @@ public class AddFeaturesToRepoMojo extends MojoSupport {
             getLog().info("Base repo: " + localRepo.getUrl());
             for (String bundle : bundles) {
                 // get rid of of possible line-breaks KARAF-313
-                bundle = bundle.replace("\r\n", "").replace("\n", "").replace(" ", "");
-                final int index = bundle.indexOf("mvn:");
-                if (index < 0) {
-                    if (skipNonMavenProtocols) {
-                        continue;
-                    }
-                    throw new MojoExecutionException("Bundle url is not a maven url: " + bundle);
-                }
-                else {
-                    bundle = bundle.substring(index);
-                }
-                // Truncate the URL when a '#', a '?' or a '$' is encountered
-                final int index1 = bundle.indexOf('?');
-                final int index2 = bundle.indexOf('#');
-                int endIndex = -1;
-                if (index1 > 0) {
-                     if (index2 > 0) {
-                         endIndex = Math.min(index1, index2);
-                     } else {
-                         endIndex = index1;
-                     }
-                } else if (index2 > 0) {
-                    endIndex = index2;
-                }
-                if (endIndex >= 0) {
-                    bundle = bundle.substring(0, endIndex);
-                }
-                final int index3 = bundle.indexOf('$');
-                if (index3 > 0) {
-                	bundle = bundle.substring(0, index3);
-                }
+                Artifact artifact = bundleToArtifact(bundle);
 
-                String[] parts = bundle.substring("mvn:".length()).split("/");
-                String groupId = parts[0];
-                String artifactId = parts[1];
-                String version = null;
-                String classifier = null;
-                String type = "jar";
-                if (parts.length > 2) {
-                    version = parts[2];
-                    if (parts.length > 3) {
-                        type = parts[3];
-                        if (parts.length > 4) {
-                            classifier = parts[4];
-                        }
-                    }
-                }
-                String dir = groupId.replace('.', '/') + "/" + artifactId + "/" + version + "/";
-                String name = artifactId + "-" + version + (classifier != null ? "-" + classifier : "") + "." + type;
+                //TODO isn't there a maven class that can do this better?
+                String dir = artifact.getGroupId().replace('.', '/') + "/" + artifact.getArtifactId() + "/" + artifact.getVersion() + "/";
+                String name = artifact.getArtifactId() + "-" + artifact.getVersion() + (artifact.getClassifier() != null ? "-" + artifact.getClassifier() : "") + "." + artifact.getType();
 
-                Artifact artifact;
                 try {
-                    artifact = factory.createArtifactWithClassifier(groupId, artifactId, version, type, classifier);
                     getLog().info("Copying bundle: " + bundle);
                     resolver.resolve(artifact, remoteRepos, localRepo);
                     copy(new FileInputStream(artifact.getFile()), repository, name, dir, new byte[8192]);
