@@ -142,7 +142,7 @@ public class AddFeaturesToRepoMojo extends MojoSupport {
                 // get rid of of possible line-breaks KARAF-313
                 Artifact artifact = bundleToArtifact(bundle);
 
-                //TODO isn't there a maven class that can do this better?
+                //TODO isn't there a maven class that can do this better?  DefaultRepositoryLayout.pathOf(Artifact)
                 String dir = artifact.getGroupId().replace('.', '/') + "/" + artifact.getArtifactId() + "/" + artifact.getVersion() + "/";
                 String name = artifact.getArtifactId() + "-" + artifact.getVersion() + (artifact.getClassifier() != null ? "-" + artifact.getClassifier() : "") + "." + artifact.getType();
 
