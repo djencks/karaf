@@ -26,9 +26,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.karaf.features.internal.Bundle;
-import org.apache.karaf.features.internal.Feature;
-import org.apache.karaf.features.internal.Features;
+import org.apache.karaf.features.BundleInfo;
+import org.apache.karaf.features.internal.model.Bundle;
+import org.apache.karaf.features.internal.model.Feature;
+import org.apache.karaf.features.internal.model.Features;
+import org.apache.karaf.features.internal.model.JaxbUtil;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.Artifact;
@@ -131,9 +133,9 @@ public class ArchiveKarMojo extends MojoSupport {
             try {
                 Features features = JaxbUtil.unmarshal(in, false);
                 for (Feature feature : features.getFeature()) {
-                    for (Bundle bundle : feature.getBundle()) {
-                        if (bundle.isDependency() == null || !bundle.isDependency()) {
-                            bundles.add(bundleToArtifact(bundle.getValue(), false));
+                    for (BundleInfo bundle : feature.getBundles()) {
+                        if (!bundle.isDependency()) {
+                            bundles.add(bundleToArtifact(bundle.getLocation(), false));
                         }
                     }
                 }
