@@ -133,6 +133,7 @@
 
     <feature name="config" description="Provide OSGi ConfigAdmin support" version="${project.version}">
         <bundle start-level="30" start="true">mvn:org.apache.karaf.shell/org.apache.karaf.shell.config/${project.version}</bundle>
+        <bundle start-level="30" start="true">mvn:org.apache.karaf.shell/org.apache.karaf.shell.region/${project.version}</bundle>
     </feature>
 
     <feature name="jetty" description="Provide Jetty engine support" version="${jetty.version}" resolver="(obr)">

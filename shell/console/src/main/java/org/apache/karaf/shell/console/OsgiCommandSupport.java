@@ -42,7 +42,7 @@ public abstract class OsgiCommandSupport extends AbstractAction implements Actio
     }
 
     public BundleContext getBundleContext() {
-        return bundleContext;
+        return bundleContext.getBundle(0).getBundleContext();
     }
 
     public void setBundleContext(BundleContext bundleContext) {
