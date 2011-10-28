@@ -17,22 +17,19 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * 
- *                 Regions element
- *             
- * 
- * <p>Java class for regionType complex type.
+ * <p>Java class for filterPackageType complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="regionType">
+ * &lt;complexType name="filterPackageType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="bundle" type="{http://karaf.apache.org/xmlns/region/v1.0.0}regionBundleType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="attribute" type="{http://karaf.apache.org/xmlns/region/v1.0.0}filterAttributeType" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
- *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="version" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -41,42 +38,44 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "regionType", propOrder = {
-    "bundle"
+@XmlType(name = "filterPackageType", propOrder = {
+    "attribute"
 })
-public class RegionType {
+public class FilterPackageType {
 
-    protected List<RegionBundleType> bundle;
-    @XmlAttribute(required = true)
+    protected List<FilterAttributeType> attribute;
+    @XmlAttribute
     protected String name;
+    @XmlAttribute
+    protected String version;
 
     /**
-     * Gets the value of the bundle property.
+     * Gets the value of the attribute property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the bundle property.
+     * This is why there is not a <CODE>set</CODE> method for the attribute property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getBundle().add(newItem);
+     *    getAttribute().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link RegionBundleType }
+     * {@link FilterAttributeType }
      * 
      * 
      */
-    public List<RegionBundleType> getBundle() {
-        if (bundle == null) {
-            bundle = new ArrayList<RegionBundleType>();
+    public List<FilterAttributeType> getAttribute() {
+        if (attribute == null) {
+            attribute = new ArrayList<FilterAttributeType>();
         }
-        return this.bundle;
+        return this.attribute;
     }
 
     /**
@@ -101,6 +100,30 @@ public class RegionType {
      */
     public void setName(String value) {
         this.name = value;
+    }
+
+    /**
+     * Gets the value of the version property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * Sets the value of the version property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVersion(String value) {
+        this.version = value;
     }
 
 }

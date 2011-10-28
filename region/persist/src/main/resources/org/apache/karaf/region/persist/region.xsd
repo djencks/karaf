@@ -55,14 +55,22 @@
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="bundle" type="bundleType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="bundle" type="regionBundleType" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="name" type="xsd:string" use="required"/>
     </xsd:complexType>
 
 
-    <xsd:complexType name="bundleType">
+    <xsd:complexType name="regionBundleType">
         <xsd:sequence/>
+        <xsd:attribute name="id" type="xsd:long"/>
+        <xsd:attribute name="location" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="filterBundleType">
+        <xsd:sequence>
+            <xsd:element name="attribute" type="filterAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
         <xsd:attribute name="id" type="xsd:long"/>
         <xsd:attribute name="symbolic-name" type="xsd:string"/>
         <xsd:attribute name="version" type="xsd:string"/>
@@ -70,16 +78,32 @@
 
     <xsd:complexType name="filterType">
         <xsd:sequence>
-            <xsd:element name="bundle" type="bundleType" minOccurs="0" maxOccurs="unbounded"/>
-            <xsd:element name="package" type="packageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="bundle" type="filterBundleType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="package" type="filterPackageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="namespace" type="filterNamespaceType" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="from" type="xsd:string" use="required"/>
         <xsd:attribute name="to" type="xsd:string" use="required"/>
     </xsd:complexType>
 
-    <xsd:complexType name="packageType">
-        <xsd:sequence/>
+    <xsd:complexType name="filterPackageType">
+        <xsd:sequence>
+            <xsd:element name="attribute" type="filterAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
         <xsd:attribute name="name" type="xsd:string"/>
         <xsd:attribute name="version" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="filterAttributeType">
+        <xsd:sequence/>
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+        <xsd:attribute name="value" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="filterNamespaceType">
+        <xsd:sequence>
+            <xsd:element name="attribute" type="filterAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
     </xsd:complexType>
 </xsd:schema>
