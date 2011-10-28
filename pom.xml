@@ -38,6 +38,7 @@
         <module>util</module>
         <module>main</module>
         <module>features</module>
+        <module>region</module>
         <module>admin</module>
         <module>deployer</module>
         <module>shell</module>
