@@ -412,16 +412,16 @@ public class ManifestHeaderProcessor
 	 * @param attribs
 	 * @return filter string
 	 */
-	public static String generateFilter(Map<String, String> attribs) {
+	public static String generateFilter(Map<String, Object> attribs) {
 		StringBuilder filter = new StringBuilder("(&");
 		boolean realAttrib = false;
 		StringBuffer realAttribs = new StringBuffer();
 
 		if (attribs == null) {
-			attribs = new HashMap<String, String>();
+			attribs = new HashMap<String, Object>();
 		}
 
-		for (Map.Entry<String, String> attrib : attribs.entrySet()) {
+		for (Map.Entry<String, Object> attrib : attribs.entrySet()) {
 			String attribName = attrib.getKey();
 
 			if (attribName.endsWith(":")) {
@@ -434,7 +434,7 @@ public class ManifestHeaderProcessor
 				realAttrib = true;
 
 				VersionRange vr = ManifestHeaderProcessor
-						.parseVersionRange(attrib.getValue());
+						.parseVersionRange(attrib.getValue().toString());
 
 				filter.append("(" + attribName + ">=" + vr.getMinimumVersion());
 
@@ -464,7 +464,7 @@ public class ManifestHeaderProcessor
 			} else if (Constants.OBJECTCLASS.equals(attribName)) {
 				realAttrib = true;
 				// objectClass has a "," separated list of interfaces
-				String[] values = attrib.getValue().split(",");
+				String[] values = attrib.getValue().toString().split(",");
 				for (String s : values)
 					filter.append("(" + Constants.OBJECTCLASS + "=" + s + ")");
 
@@ -540,7 +540,7 @@ public class ManifestHeaderProcessor
    * @return filter string
    */
   public static String generateFilter(String type, String name,
-      Map<String, String> attribs) {
+      Map<String, Object> attribs) {
     StringBuffer filter = new StringBuffer();
     String result;
     // shortcut for the simple case with no attribs.

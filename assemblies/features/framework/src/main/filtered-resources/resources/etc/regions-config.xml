@@ -20,6 +20,15 @@
     <region name="org.apache.karaf.region.application"></region>
 
     <filter to="org.eclipse.equinox.region.kernel" from="org.apache.karaf.region.application">
-        <package name="javax.xml.bind"/>
+        <package name="org.slf4j"/>
+        <package name="jline"/>
+        <package name="jline.console"/>
+        <package name="jline.internal"/>
+        <package name="org.apache.felix.gogo.commands"/>
+        <package name="org.apache.felix.service.command"/>
+        <package name="org.apache.karaf.shell.console"/>
+        <package name="org.apache.karaf.shell.console.jline"/>
+        <package name="org.osgi.service.blueprint"/>
+        <package name="org.osgi.service.blueprint.container"/>
     </filter>
 </regions>

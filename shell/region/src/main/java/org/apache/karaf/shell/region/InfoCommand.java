@@ -61,6 +61,9 @@ public class InfoCommand extends RegionCommandSupport {
 
     public String getStateString(Bundle bundle)
     {
+        if (bundle == null) {
+            return "Bundle null";
+        }
         int state = bundle.getState();
         if (state == Bundle.ACTIVE) {
             return "Active     ";

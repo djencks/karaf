@@ -20,8 +20,12 @@
 
 package org.apache.karaf.region.persist;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
+
 /**
  * @version $Rev:$ $Date:$
  */
 public interface RegionsPersistence {
+    void install(Bundle b, String regionName) throws BundleException;
 }

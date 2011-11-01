@@ -216,7 +216,7 @@
 		<bundle start-level="30">mvn:org.apache.felix/org.apache.felix.webconsole.plugins.event/${felix.eventadmin-plugin.version}</bundle>
     </feature>
 
-    <feature name="ssh" description="Provide a SSHd server on Karaf" version="${project.version}">
+    <feature name="ssh" description="Provide a SSHd server on Karaf" version="${project.version}" region="org.apache.karaf.region.application">
         <config name="org.apache.karaf.shell">
             sshPort=8101
             sshHost=0.0.0.0

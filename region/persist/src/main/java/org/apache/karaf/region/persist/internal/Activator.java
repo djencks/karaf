@@ -20,20 +20,15 @@
 
 package org.apache.karaf.region.persist.internal;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.xml.bind.JAXBException;
 import org.apache.karaf.region.persist.RegionsPersistence;
 import org.apache.karaf.region.persist.internal.util.SingleServiceTracker;
 import org.eclipse.equinox.region.RegionDigraph;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
-import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,29 +40,37 @@ public class Activator implements BundleActivator {
     private static final Logger log = LoggerFactory.getLogger(Activator.class);
 
     private SingleServiceTracker<RegionDigraph> tracker;
-    private final AtomicReference<ServiceReference<RegionDigraph>> ref = new AtomicReference<ServiceReference<RegionDigraph>>();
     private final AtomicReference<RegionsPersistenceImpl> persistence = new AtomicReference<RegionsPersistenceImpl>();
+    private ServiceRegistration<RegionsPersistence> reg;
 
     @Override
-    public void start(BundleContext bundleContext) throws Exception {
-         tracker = new SingleServiceTracker<RegionDigraph>(bundleContext, RegionDigraph.class, new SingleServiceTracker.SingleServiceListener() {
-          public void serviceFound() {
-            log.debug("Found RegionDigraph service, initializing");
-              RegionDigraph regionDigraph = tracker.getService();
-              RegionsPersistenceImpl persistence = null;
-              try {
-                  persistence = new RegionsPersistenceImpl(regionDigraph);
-              } catch (Exception e) {
-                  log.info("Could not create RegionsPersistenceImpl", e);
-              }
-              Activator.this.persistence.set(persistence);
-          }
-          public void serviceLost() {
-              Activator.this.persistence.set(null);
-          }
-          public void serviceReplaced() {
-              //??
-          }
+    public void start(final BundleContext bundleContext) throws Exception {
+        tracker = new SingleServiceTracker<RegionDigraph>(bundleContext, RegionDigraph.class, new SingleServiceTracker.SingleServiceListener() {
+            public void serviceFound() {
+                log.debug("Found RegionDigraph service, initializing");
+                RegionDigraph regionDigraph = tracker.getService();
+                Bundle framework = bundleContext.getBundle(0);
+                RegionsPersistenceImpl persistence = null;
+                try {
+                    persistence = new RegionsPersistenceImpl(regionDigraph, framework);
+                    reg = bundleContext.registerService(RegionsPersistence.class, persistence, null);
+                } catch (Exception e) {
+                    log.info("Could not create RegionsPersistenceImpl", e);
+                }
+                Activator.this.persistence.set(persistence);
+            }
+
+            public void serviceLost() {
+                if (reg != null) {
+                    reg.unregister();
+                    reg = null;
+                }
+                Activator.this.persistence.set(null);
+            }
+
+            public void serviceReplaced() {
+                //??
+            }
         });
         tracker.open();
     }

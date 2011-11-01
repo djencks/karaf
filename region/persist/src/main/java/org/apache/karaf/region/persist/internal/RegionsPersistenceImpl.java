@@ -50,6 +50,8 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.wiring.BundleCapability;
+import org.osgi.framework.wiring.BundleRevision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,12 +65,26 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
     private JAXBContext jaxbContext;
     private BundleContext frameworkContext;
     private RegionDigraph regionDigraph;
+    private Region kernel;
+    private Bundle framework;
 
-    public RegionsPersistenceImpl(RegionDigraph regionDigraph) throws JAXBException, BundleException, IOException, InvalidSyntaxException {
+    public RegionsPersistenceImpl(RegionDigraph regionDigraph, Bundle framework) throws JAXBException, BundleException, IOException, InvalidSyntaxException {
         log.info("Loading region digraph persistence");
+        this.framework = framework;
         this.regionDigraph = regionDigraph;
+        kernel = regionDigraph.getRegion(0);
         jaxbContext = JAXBContext.newInstance(RegionsType.class);
         load();
+    }
+
+    @Override
+    public void install(Bundle b, String regionName) throws BundleException {
+        Region region = regionDigraph.getRegion(regionName);
+        if (region == null) {
+            region = regionDigraph.createRegion(regionName);
+        }
+        kernel.removeBundle(b);
+        region.addBundle(b);
     }
 
     void save(RegionsType regionsType, Writer out) throws JAXBException {
@@ -132,21 +148,30 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
                     symbolicName = b.getSymbolicName();
                     version = b.getVersion().toString();
                 }
-                String namespace = "osgi.wiring.bundle";
+                String namespace = BundleRevision.BUNDLE_NAMESPACE;
                 List<FilterAttributeType> attributeTypes = bundleType.getAttribute();
                 buildFilter(symbolicName, version, namespace, attributeTypes, builder);
             }
             for (FilterPackageType packageType: filterType.getPackage()) {
                 String packageName = packageType.getName();
                 String version = packageType.getVersion();
-                String namespace = "osgi.wiring.package";
+                String namespace = BundleRevision.PACKAGE_NAMESPACE;
                 List<FilterAttributeType> attributeTypes = packageType.getAttribute();
                 buildFilter(packageName, version, namespace, attributeTypes, builder);
+            }
+            if (to == kernel) {
+                //add framework exports
+                BundleRevision rev = framework.adapt(BundleRevision.class);
+                List<BundleCapability> caps = rev.getDeclaredCapabilities(BundleRevision.PACKAGE_NAMESPACE);
+                for (BundleCapability cap: caps) {
+                    String filter = ManifestHeaderProcessor.generateFilter(cap.getAttributes());
+                    builder.allow(BundleRevision.PACKAGE_NAMESPACE, filter);
+                }
             }
             //TODO explicit services?
             for (FilterNamespaceType namespaceType: filterType.getNamespace()) {
                 String namespace = namespaceType.getName();
-                HashMap<String, String> attributes = new HashMap<String, String>();
+                HashMap<String, Object> attributes = new HashMap<String, Object>();
                 for (FilterAttributeType attributeType: namespaceType.getAttribute()) {
                     attributes.put(attributeType.getName(), attributeType.getValue());
                 }
@@ -158,7 +183,7 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
     }
 
     private void buildFilter(String packageName, String version, String namespace, List<FilterAttributeType> attributeTypes, RegionFilterBuilder builder) throws InvalidSyntaxException {
-        HashMap<String, String> attributes = new HashMap<String, String>();
+        HashMap<String, Object> attributes = new HashMap<String, Object>();
         if (namespace != null) {
             attributes.put(namespace, packageName);
         }
