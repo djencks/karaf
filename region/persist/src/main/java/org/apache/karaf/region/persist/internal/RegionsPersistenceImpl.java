@@ -20,6 +20,10 @@
 
 package org.apache.karaf.region.persist.internal;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
@@ -46,24 +50,49 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.InvalidSyntaxException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @version $Rev:$ $Date:$
  */
 public class RegionsPersistenceImpl implements RegionsPersistence {
 
+    private static final Logger log = LoggerFactory.getLogger(RegionsPersistenceImpl.class);
+
     private JAXBContext jaxbContext;
     private BundleContext frameworkContext;
     private RegionDigraph regionDigraph;
 
-    public RegionsPersistenceImpl(RegionDigraph regionDigraph) throws JAXBException {
+    public RegionsPersistenceImpl(RegionDigraph regionDigraph) throws JAXBException, BundleException, IOException, InvalidSyntaxException {
+        log.info("Loading region digraph persistence");
         this.regionDigraph = regionDigraph;
         jaxbContext = JAXBContext.newInstance(RegionsType.class);
+        load();
     }
 
     void save(RegionsType regionsType, Writer out) throws JAXBException {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.marshal(regionsType, out);
+    }
+
+    void load() throws IOException, BundleException, JAXBException, InvalidSyntaxException {
+        if (this.regionDigraph.getRegions().size() <= 1) {
+            File base = new File(System.getProperty("karaf.base"));
+            File regionsConfig = new File(new File(base, "etc"), "regions-config.xml");
+            if (regionsConfig.exists()) {
+                log.info("initializing region digraph from etc/regions-config.xml");
+                Reader in = new FileReader(regionsConfig);
+                try {
+                        load(this.regionDigraph, in);
+                    } finally {
+                        in.close();
+                    }
+            } else {
+                log.info("no regions config file");
+            }
+        }
+
     }
 
     void  load(RegionDigraph regionDigraph, Reader in) throws JAXBException, BundleException, InvalidSyntaxException {
@@ -79,6 +108,7 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
     void load(RegionsType regionsType, RegionDigraph regionDigraph) throws BundleException, InvalidSyntaxException {
         for (RegionType regionType: regionsType.getRegion()) {
             String name = regionType.getName();
+            log.debug("Creating region: " + name);
             Region region = regionDigraph.createRegion(name);
             for (RegionBundleType bundleType: regionType.getBundle()) {
                 if (bundleType.getId() != null) {
@@ -92,6 +122,7 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
         for (FilterType filterType: regionsType.getFilter()) {
             Region from = regionDigraph.getRegion(filterType.getFrom());
             Region to = regionDigraph.getRegion(filterType.getTo());
+            log.debug("Creating filter between " + from.getName() + " to " + to.getName());
             RegionFilterBuilder builder = regionDigraph.createRegionFilterBuilder();
             for (FilterBundleType bundleType: filterType.getBundle()) {
                 String symbolicName = bundleType.getSymbolicName();

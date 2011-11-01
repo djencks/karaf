@@ -18,10 +18,13 @@
 
 -->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-    default-activation="lazy">
-    <reference id="regionDigraph"
-        interface="org.eclipse.equinox.region.RegionDigraph"
-        availability="mandatory" />
+    default-activation="eager">
+    <!--<reference id="regionDigraph"-->
+        <!--interface="org.eclipse.equinox.region.RegionDigraph"-->
+        <!--availability="mandatory" />-->
 
+    <!--<bean id="RegionsPersistence" class="org.apache.karaf.region.persist.internal.RegionsPersistenceImpl" activation="eager" scope="singleton">-->
+        <!--<argument ref="regionDigraph"/>-->
+    <!--</bean>-->
 
 </blueprint>

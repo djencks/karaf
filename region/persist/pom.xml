@@ -44,6 +44,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>region</artifactId>
             <version>1.0.0.v20110506</version>
@@ -83,6 +89,7 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <Bundle-Activator>org.apache.karaf.region.persist.internal.Activator</Bundle-Activator>
                         <Import-Package>
                             !${project.artifactId}*,
                             *
