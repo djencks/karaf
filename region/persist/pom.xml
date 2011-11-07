@@ -29,7 +29,7 @@
 
     <artifactId>org.apache.karaf.region.persist</artifactId>
     <packaging>bundle</packaging>
-    <name>Apache Karaf :: Region :: Peristence</name>
+    <name>Apache Karaf :: Region :: Persistence</name>
     <description>This bundle provides an xml regions model and install/dump actions.</description>
 
     <properties>
