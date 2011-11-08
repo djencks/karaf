@@ -21,14 +21,16 @@
 
     <filter to="org.eclipse.equinox.region.kernel" from="org.apache.karaf.region.application">
         <package name="org.slf4j"/>
-        <package name="jline"/>
-        <package name="jline.console"/>
-        <package name="jline.internal"/>
-        <package name="org.apache.felix.gogo.commands"/>
-        <package name="org.apache.felix.service.command"/>
-        <package name="org.apache.karaf.shell.console"/>
-        <package name="org.apache.karaf.shell.console.jline"/>
+        <package name="org.apache.aries.util"/>
+        <package name="org.apache.aries.util.nls"/>
+        <package name="org.apache.aries.util.tracker"/>
+        <package name="org.apache.aries.util.service.registry"/>
+        <package name="org.apache.aries.proxy.weaving"/>
+        <package name="org.apache.aries.proxy"/>
+        <package name="org.apache.aries.blueprint"/>
+        <package name="org.apache.aries.blueprint.mutable"/>
         <package name="org.osgi.service.blueprint"/>
         <package name="org.osgi.service.blueprint.container"/>
+        <package name="org.osgi.service.blueprint.reflect"/>
     </filter>
 </regions>

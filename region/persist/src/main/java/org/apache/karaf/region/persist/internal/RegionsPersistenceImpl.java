@@ -28,6 +28,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -164,7 +165,7 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
                 BundleRevision rev = framework.adapt(BundleRevision.class);
                 List<BundleCapability> caps = rev.getDeclaredCapabilities(BundleRevision.PACKAGE_NAMESPACE);
                 for (BundleCapability cap: caps) {
-                    String filter = ManifestHeaderProcessor.generateFilter(cap.getAttributes());
+                    String filter = ManifestHeaderProcessor.generateFilter(filter(cap.getAttributes()));
                     builder.allow(BundleRevision.PACKAGE_NAMESPACE, filter);
                 }
             }
@@ -180,6 +181,13 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
             }
             regionDigraph.connect(from, builder.build(), to);
         }
+    }
+
+    private Map<String, Object> filter(Map<String, Object> attributes) {
+        Map<String, Object> result = new HashMap<String, Object>(attributes);
+        result.remove("bundle-version");
+        result.remove("bundle-symbolic-name");
+        return result;
     }
 
     private void buildFilter(String packageName, String version, String namespace, List<FilterAttributeType> attributeTypes, RegionFilterBuilder builder) throws InvalidSyntaxException {
