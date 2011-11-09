@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,6 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
     private static final Logger log = LoggerFactory.getLogger(RegionsPersistenceImpl.class);
 
     private JAXBContext jaxbContext;
-    private BundleContext frameworkContext;
     private RegionDigraph regionDigraph;
     private Region kernel;
     private Bundle framework;
@@ -123,6 +123,7 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
     }
 
     void load(RegionsType regionsType, RegionDigraph regionDigraph) throws BundleException, InvalidSyntaxException {
+        BundleContext frameworkContext = framework.getBundleContext();
         for (RegionType regionType: regionsType.getRegion()) {
             String name = regionType.getName();
             log.debug("Creating region: " + name);
@@ -161,10 +162,18 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
                 buildFilter(packageName, version, namespace, attributeTypes, builder);
             }
             if (to == kernel) {
+                //allow visibility of framework bundle
+                Bundle b = frameworkContext.getBundle(0);
+                String symbolicName = b.getSymbolicName();
+                String version = b.getVersion().toString();
+                String namespace = BundleRevision.BUNDLE_NAMESPACE;
+                List<FilterAttributeType> attributeTypes = Collections.emptyList();
+                buildFilter(symbolicName, version, namespace, attributeTypes, builder);
+
                 //add framework exports
                 BundleRevision rev = framework.adapt(BundleRevision.class);
                 List<BundleCapability> caps = rev.getDeclaredCapabilities(BundleRevision.PACKAGE_NAMESPACE);
-                for (BundleCapability cap: caps) {
+                for (BundleCapability cap : caps) {
                     String filter = ManifestHeaderProcessor.generateFilter(filter(cap.getAttributes()));
                     builder.allow(BundleRevision.PACKAGE_NAMESPACE, filter);
                 }
