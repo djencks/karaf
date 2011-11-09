@@ -66,8 +66,6 @@
         <bundle start-level='30'>mvn:org.apache.aries.application/org.apache.aries.application.utils/${aries.application.version}</bundle>
         <bundle start-level='30'>mvn:org.apache.aries.application/org.apache.aries.application.modeller/${aries.application.version}</bundle>
         <bundle start-level='30'>mvn:org.apache.aries.application/org.apache.aries.application.default.local.platform/${aries.application.version}</bundle>
-        <bundle start-level='30'>mvn:org.apache.aries.application/org.apache.aries.application.noop.platform.repo/${aries.application.version}</bundle>
-        <bundle start-level='30'>mvn:org.apache.aries.application/org.apache.aries.application.noop.postresolve.process/${aries.application.version}</bundle>
         <bundle start-level='30'>mvn:org.apache.aries.application/org.apache.aries.application.deployment.management/${aries.application.version}</bundle>
         <!-- without isolation -->
         <bundle start-level='30'>mvn:org.apache.aries.application/org.apache.aries.application.runtime/${aries.application.version}</bundle>
