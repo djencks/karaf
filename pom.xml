@@ -152,7 +152,7 @@
         <aries.proxy.version>0.4</aries.proxy.version>
         <aries.quiesce.version>0.3.2</aries.quiesce.version>
         <aries.transaction.version>0.3.1-SNAPSHOT</aries.transaction.version>
-        <aries.util.version>0.4</aries.util.version>
+        <aries.util.version>0.4-SNAPSHOT</aries.util.version>
         <gemini.blueprint.version>1.0.0.RELEASE</gemini.blueprint.version>
         <jansi.version>1.7</jansi.version>
         <jline.version>2.6-SNAPSHOT</jline.version>
