@@ -22,6 +22,7 @@
     <filter to="org.eclipse.equinox.region.kernel" from="org.apache.karaf.region.application">
         <package name="org.slf4j"/>
         <package name="org.apache.aries.util"/>
+        <package name="org.apache.aries.util.io"/>
         <package name="org.apache.aries.util.nls"/>
         <package name="org.apache.aries.util.tracker"/>
         <package name="org.apache.aries.util.service.registry"/>
