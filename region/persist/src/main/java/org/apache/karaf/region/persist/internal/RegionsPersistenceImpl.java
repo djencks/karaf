@@ -21,12 +21,10 @@
 package org.apache.karaf.region.persist.internal;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,14 +160,6 @@ public class RegionsPersistenceImpl implements RegionsPersistence {
                 buildFilter(packageName, version, namespace, attributeTypes, builder);
             }
             if (to == kernel) {
-                //allow visibility of framework bundle
-                Bundle b = frameworkContext.getBundle(0);
-                String symbolicName = b.getSymbolicName();
-                String version = b.getVersion().toString();
-                String namespace = BundleRevision.BUNDLE_NAMESPACE;
-                List<FilterAttributeType> attributeTypes = Collections.emptyList();
-                buildFilter(symbolicName, version, namespace, attributeTypes, builder);
-
                 //add framework exports
                 BundleRevision rev = framework.adapt(BundleRevision.class);
                 List<BundleCapability> caps = rev.getDeclaredCapabilities(BundleRevision.PACKAGE_NAMESPACE);
