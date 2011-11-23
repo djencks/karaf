@@ -41,6 +41,7 @@ public class Activator implements BundleActivator {
 
     private SingleServiceTracker<RegionDigraph> tracker;
     private final AtomicReference<RegionsPersistenceImpl> persistence = new AtomicReference<RegionsPersistenceImpl>();
+    private final AtomicReference<RegionsBundleTracker> bundleTracker = new AtomicReference<RegionsBundleTracker>();
     private ServiceRegistration<RegionsPersistence> reg;
 
     @Override
@@ -54,6 +55,10 @@ public class Activator implements BundleActivator {
                 try {
                     persistence = new RegionsPersistenceImpl(regionDigraph, framework);
                     reg = bundleContext.registerService(RegionsPersistence.class, persistence, null);
+
+                    RegionsBundleTracker bundleTracker = new RegionsBundleTracker();
+                    bundleTracker.start(bundleContext, persistence);
+                    Activator.this.bundleTracker.set(bundleTracker);
                 } catch (Exception e) {
                     log.info("Could not create RegionsPersistenceImpl", e);
                 }
@@ -66,6 +71,7 @@ public class Activator implements BundleActivator {
                     reg = null;
                 }
                 Activator.this.persistence.set(null);
+                Activator.this.bundleTracker.set(null);
             }
 
             public void serviceReplaced() {
@@ -79,6 +85,7 @@ public class Activator implements BundleActivator {
     public void stop(BundleContext bundleContext) throws Exception {
         tracker.close();
         persistence.set(null);
+        bundleTracker.set(null);
     }
 
 
