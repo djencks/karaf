@@ -33,6 +33,7 @@
     <name>Apache Karaf :: Region</name>
 
     <modules>
+        <module>commands</module>
         <module>persist</module>
     </modules>
     <profiles>
@@ -42,6 +43,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
+                <module>commands</module>
                 <module>persist</module>
             </modules>
 

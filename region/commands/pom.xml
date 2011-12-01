@@ -22,13 +22,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.apache.karaf.shell</groupId>
-        <artifactId>shell</artifactId>
+        <groupId>org.apache.karaf.region</groupId>
+        <artifactId>region</artifactId>
         <version>3.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>org.apache.karaf.shell.region</artifactId>
+    <artifactId>org.apache.karaf.region.commands</artifactId>
     <packaging>bundle</packaging>
     <name>Apache Karaf :: Shell :: Region Commands</name>
     <description>This bundle provides Karaf shell commands to manipulate the Region service.</description>
@@ -38,27 +37,11 @@
     </properties>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>org.apache.servicemix.bundles</groupId>-->
-            <!--<artifactId>org.apache.servicemix.bundles.commons-collections</artifactId>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.servicemix.bundles</groupId>-->
-            <!--<artifactId>org.apache.servicemix.bundles.commons-lang</artifactId>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
             <scope>provided</scope>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>org.apache.felix</groupId>-->
-            <!--<artifactId>org.apache.felix.bundlerepository</artifactId>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.karaf.shell</groupId>
@@ -110,9 +93,6 @@
                     <instructions>
                         <Import-Package>
                             !${project.artifactId}*,
-                            org.apache.felix.service.command,
-                            org.apache.felix.gogo.commands,
-                            org.apache.karaf.shell.console,
                             *
                         </Import-Package>
                         <Private-Package>!*</Private-Package>

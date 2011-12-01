@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.karaf.shell.region;
+package org.apache.karaf.region.commands;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +22,14 @@ import java.util.Map;
 
 import org.apache.aries.util.VersionRange;
 import org.apache.aries.util.manifest.ManifestHeaderProcessor;
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.commands.Argument;
+import org.apache.karaf.shell.commands.Command;
 import org.eclipse.equinox.region.Region;
 import org.eclipse.equinox.region.RegionDigraph;
 import org.eclipse.equinox.region.RegionFilter;
 import org.eclipse.equinox.region.RegionFilterBuilder;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.Constants;
 
 @Command(scope = "region", name = "addFilter", description = "Adds a Filter between two regions")

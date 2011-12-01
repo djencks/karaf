@@ -42,7 +42,6 @@
         <module>http</module>
         <module>log</module>
         <module>obr</module>
-        <module>region</module>
         <module>services</module>
         <module>ssh</module>
         <module>web</module>

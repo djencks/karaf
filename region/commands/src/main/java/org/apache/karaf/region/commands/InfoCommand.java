@@ -14,25 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.karaf.shell.region;
+package org.apache.karaf.region.commands;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.Array;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.commands.Command;
 import org.eclipse.equinox.region.Region;
 import org.eclipse.equinox.region.RegionDigraph;
-import org.eclipse.equinox.region.RegionDigraphPersistence;
 import org.eclipse.equinox.region.RegionFilter;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 
 @Command(scope = "region", name = "info", description = "Prints information about region digraph.")
 public class InfoCommand extends RegionCommandSupport {

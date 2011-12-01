@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.karaf.shell.region.util;
+package org.apache.karaf.region.commands.util;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.net.URLConnection;

@@ -14,12 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.karaf.shell.region;
+package org.apache.karaf.region.commands;
 
 import java.util.List;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.commands.Argument;
+import org.apache.karaf.shell.commands.Command;
 import org.eclipse.equinox.region.RegionDigraph;
 
 @Command(scope = "region", name = "addRegion", description = "Adds a list of regions to the RegionDigraph service.")

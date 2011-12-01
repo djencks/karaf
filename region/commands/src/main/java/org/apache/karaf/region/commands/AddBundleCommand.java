@@ -14,17 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.karaf.shell.region;
+package org.apache.karaf.region.commands;
 
 import java.util.List;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.shell.commands.Argument;
+import org.apache.karaf.shell.commands.Command;
 import org.eclipse.equinox.region.Region;
 import org.eclipse.equinox.region.RegionDigraph;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.launch.Framework;
 
 @Command(scope = "region", name = "addBundle", description = "Adds a list of known bundles by id to a specified Region.")
 public class AddBundleCommand extends RegionCommandSupport {
