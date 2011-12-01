@@ -135,8 +135,8 @@
         <bundle start-level="30" start="true">mvn:org.apache.karaf.shell/org.apache.karaf.shell.config/${project.version}</bundle>
     </feature>
 
-    <feature name="region" description="Provide Region support" version="${project.version}">
-        <bundle start-level="30" start="true">mvn:org.apache.karaf.shell/org.apache.karaf.region.commands/${project.version}</bundle>
+    <feature name="region" description="Provide Region commands" version="${project.version}">
+        <bundle start-level="30" start="true">mvn:org.apache.karaf.region/org.apache.karaf.region.commands/${project.version}</bundle>
     </feature>
 
     <feature name="jetty" description="Provide Jetty engine support" version="${jetty.version}" resolver="(obr)">

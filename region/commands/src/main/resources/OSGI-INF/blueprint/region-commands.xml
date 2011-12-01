@@ -25,16 +25,16 @@
 
     <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
         <command name="region/addBundle">
-            <action class="org.apache.karaf.shell.region.AddBundleCommand" />
+            <action class="org.apache.karaf.region.commands.AddBundleCommand" />
         </command>
         <command name="region/addFilter">
-            <action class="org.apache.karaf.shell.region.AddFilterCommand" />
+            <action class="org.apache.karaf.region.commands.AddFilterCommand" />
         </command>
         <command name="region/addRegion">
-            <action class="org.apache.karaf.shell.region.AddRegionCommand" />
+            <action class="org.apache.karaf.region.commands.AddRegionCommand" />
         </command>
         <command name="region/info">
-            <action class="org.apache.karaf.shell.region.InfoCommand" />
+            <action class="org.apache.karaf.region.commands.InfoCommand" />
         </command>
         <!--<command name="region/list">-->
             <!--<action class="org.apache.karaf.shell.region.ListCommand">-->
